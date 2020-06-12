@@ -3,15 +3,15 @@
 A News app that uses flutter and https://newsapi.org/.
 
 Added features:
--Dark Mode
--Pull to refresh
--Change the news based on country
--Sort the news
+- Dark Mode
+- Pull to refresh
+- Change the news based on country
+- Sort the news
 
 To Do:
--a search function
--a sharing mechanism
--bookmarks
+- a search function
+- a sharing mechanism
+- bookmarks
 
 Reference:
 
