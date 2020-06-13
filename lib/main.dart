@@ -18,18 +18,16 @@ class MyApp extends StatelessWidget {
         primaryColorDark: Colors.black,
         canvasColor: Colors.white,
 
-        //appBarTheme: AppBarTheme(brightness: Brightness.light
       ),
       darkTheme: ThemeData(
         primaryColor: Colors.black,
         primaryColorBrightness: Brightness.dark,
-        primaryColorLight: Colors.black,
+        primaryColorLight: Colors.white,
         brightness: Brightness.dark,
         primaryColorDark: Colors.black,
         indicatorColor: Colors.white,
         canvasColor: Colors.black,
 
-        //appBarTheme: AppBarTheme(brightness: Brightness.dark)),
       ),
       home: Home(),
     );

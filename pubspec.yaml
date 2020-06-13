@@ -18,7 +18,10 @@ environment:
 
 dependencies:
   http:
+  flappy_search_bar: ^1.7.2
+  transparent_image: ^1.0.0
   webview_flutter: ^0.3.22+1
+  share: ^0.6.4+3
   flutter:
     sdk: flutter
 
@@ -55,6 +58,9 @@ flutter:
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
+
+  assets:
+    - assets/transparent.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

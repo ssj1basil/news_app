@@ -8,6 +8,7 @@ import 'package:newsapp/helper/Drop_down_list.dart';
 import 'package:newsapp/helper/category_list_maker.dart';
 import 'package:newsapp/helper/get_country_list.dart';
 import 'package:newsapp/helper/default_values.dart';
+import 'package:newsapp/views/search_view.dart';
 
 
 class Home extends StatefulWidget {
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
 
   getnews(String category,String ISO, String sortby) async {
     News newsclass = new News();
-    await newsclass.get_news(category,ISO,sortby);
+    await newsclass.get_news(null, Category : category,Country : ISO,sortby: sortby);
     article = newsclass.news;
     setState(() {
       _loading = false;
@@ -91,7 +92,9 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => searchbar()));
+            },
           ),
           SizedBox(
             width: 5,
@@ -131,7 +134,7 @@ class _HomeState extends State<Home> {
                             }),
                       ),
 
-                      //Sort by and Country
+                      ///Sort by and Country
                       Container(
                         padding: EdgeInsets.only(left: 10, right: 10, top: 9),
                         child: Row(
@@ -155,7 +158,6 @@ class _HomeState extends State<Home> {
 
                       ///Articles
                       Container(
-                          padding: EdgeInsets.only(top: 16),
                           child: ListView.builder(
                               physics: ClampingScrollPhysics(),
                               itemCount: article.length,

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:share/share.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -14,6 +14,8 @@ class article_view extends StatefulWidget {
 
 class _article_viewState extends State<article_view> {
   final Completer<WebViewController> _completer = Completer<WebViewController>();
+
+  bool _isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +34,33 @@ class _article_viewState extends State<article_view> {
           ],
         ),
         actions: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.share),
+          IconButton(
+            onPressed: () {
+              final RenderBox box = context.findRenderObject();
+              Share.share(widget.web_url, sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+            },
+            icon: Icon(Icons.share),
           )
         ],
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: WebView(
-        initialUrl: widget.web_url,
-        onWebViewCreated: ((WebViewController webviewController) {
-          _completer.complete(webviewController);
-        }),
-      )),
+      body: Stack(children: <Widget>[
+        Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: WebView(
+              initialUrl: widget.web_url,
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: ((WebViewController webviewController) {
+                _completer.complete(webviewController);
+              }),
+              onPageFinished: (finish) {
+                setState(() {
+                  _isLoading = false;
+                });
+              },
+            )),
+        if (_isLoading) Center(child: CircularProgressIndicator())
+      ]),
     );
   }
 }
