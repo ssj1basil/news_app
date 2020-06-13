@@ -7,10 +7,10 @@ Added features:
 - Pull to refresh
 - Change the news based on country
 - Sort the news
-
-To Do:
 - a search function
 - a sharing mechanism
+
+To Do:
 - bookmarks
 
 Reference:
