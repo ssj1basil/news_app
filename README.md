@@ -17,7 +17,6 @@ To Do:`
 =======
 
 To Do:
->>>>>>> 2a17897c0a7d3da5a828bd69ce2e1149b2e5ec83
 - bookmarks
 
 Reference:
