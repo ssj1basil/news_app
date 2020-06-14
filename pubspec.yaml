@@ -18,6 +18,9 @@ environment:
 
 dependencies:
   http:
+  flutter_icons: ^1.1.0
+  progress_dialog: ^1.2.4
+  flutter_inappwebview: ^3.3.0+3
   flappy_search_bar: ^1.7.2
   transparent_image: ^1.0.0
   webview_flutter: ^0.3.22+1

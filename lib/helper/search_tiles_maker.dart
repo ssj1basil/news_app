@@ -40,7 +40,7 @@ class _category_viewState extends State<category_view> {
                     //to load an empty placeholder while image loads from the internet
                     child: (FadeInImage.assetNetwork(
                         width: 100,
-                        height: 100,
+                        height: 130,
                         fit: BoxFit.cover,
                         placeholder: 'assets/transparent.png',
                         image: widget.article.urlToimage)))),

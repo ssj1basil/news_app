@@ -4,8 +4,6 @@ import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:newsapp/helper/search_tiles_maker.dart';
 import 'package:newsapp/helper/news.dart';
 import 'package:newsapp/models/article_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class searchbar extends StatefulWidget {
   @override
@@ -19,6 +17,7 @@ class _searchbarState extends State<searchbar> {
 
   News newsclass = new News();
 
+  @override
   Widget build(BuildContext context) {
     return (Scaffold(
         body: SafeArea(

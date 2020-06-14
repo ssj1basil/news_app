@@ -26,8 +26,7 @@ class News {
 
     news = [];
     print(query);
-    get_news(query);
-    await Future.delayed(Duration(seconds: 2));
+    await get_news(query);
 
     return news;
 

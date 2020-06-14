@@ -1,129 +1,147 @@
-import 'dart:math';
-
-import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'package:flappy_search_bar/scaled_tile.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-void main() => runApp(MyApp());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(new MyApp());
+}
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => new _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  InAppWebViewController webView;
+  String url = "";
+  double progress = 0;
+  bool _darktheme = true;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
-    );
-  }
-}
+        theme: ThemeData(
+          primaryColor: Colors.white,
+          primaryColorBrightness: Brightness.light,
+          brightness: Brightness.light,
+          primaryColorDark: Colors.black,
+          canvasColor: Colors.white,
 
-class Post {
-  final String title;
-  final String body;
-
-  Post(this.title, this.body);
-}
-
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  final SearchBarController<Post> _searchBarController = SearchBarController();
-  bool isReplay = false;
-
-  Future<List<Post>> _getALlPosts(String text) async {
-    await Future.delayed(Duration(seconds: text.length == 4 ? 10 : 1));
-    if (isReplay) return [Post("Replaying !", "Replaying body")];
-    if (text.length == 5) throw Error();
-    if (text.length == 6) return [];
-    List<Post> posts = [];
-
-    var random = new Random();
-    for (int i = 0; i < 10; i++) {
-      posts.add(Post("$text $i", "body random number : ${random.nextInt(100)}"));
-    }
-    return posts;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SearchBar<Post>(
-          searchBarPadding: EdgeInsets.symmetric(horizontal: 10),
-          headerPadding: EdgeInsets.symmetric(horizontal: 5),
-          listPadding: EdgeInsets.symmetric(horizontal:  10),
-          onSearch: _getALlPosts,
-          searchBarController: _searchBarController,
-          placeHolder: Text("placeholder"),
-          cancellationWidget: Text("Cancel"),
-          emptyWidget: Text("empty"),
-          indexedScaledTileBuilder: (int index) => ScaledTile.count(2,1),
-          header: Row(
-            children: <Widget>[
-              RaisedButton(
-                child: Text("sort"),
-                onPressed: () {
-                  _searchBarController.sortList((Post a, Post b) {
-                    return a.body.compareTo(b.body);
-                  });
-                },
-              ),
-              RaisedButton(
-                child: Text("Desort"),
-                onPressed: () {
-                  _searchBarController.removeSort();
-                },
-              ),
-              RaisedButton(
-                child: Text("Replay"),
-                onPressed: () {
-                  isReplay = !isReplay;
-                  _searchBarController.replayLastSearch();
-                },
-              ),
-            ],
-          ),
-          onCancelled: () {
-            print("Cancelled triggered");
-          },
-          mainAxisSpacing: 4,
-          crossAxisSpacing: 4,
-          crossAxisCount: 2,
-          onItemFound: (Post post, int index) {
-            return Container(
-              color: Colors.white,
-              child: ListTile(
-                title: Text(post.title),
-                isThreeLine: true,
-                subtitle: Text(post.body),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Detail()));
-                },
-              ),
-            );
-          },
         ),
-      ),
-    );
-  }
-}
+      darkTheme: ThemeData(
+      primaryColor: Colors.black,
+      primaryColorBrightness: Brightness.dark,
+      primaryColorLight: Colors.white,
+      brightness: Brightness.dark,
+      primaryColorDark: Colors.black,
+      indicatorColor: Colors.white,
+      canvasColor: Colors.black,
 
-class Detail extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            Text("Detail"),
-          ],
+    ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('InAppWebView Example'),
         ),
+        body: Container(
+            child: Column(children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                    "CURRENT URL\n${(url.length > 50) ? url.substring(0, 50) + "..." : url}"),
+              ),
+              Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container()),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.all(10.0),
+                  decoration:
+                  BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+                  child: InAppWebView(
+                      initialUrl: "https://flutter.dev/",
+                    initialHeaders: {},
+                    initialOptions: InAppWebViewGroupOptions(
+                      android: AndroidInAppWebViewOptions(
+                        supportZoom: true,
+                        forceDark: _darktheme?AndroidForceDark.FORCE_DARK_ON:AndroidForceDark.FORCE_DARK_OFF,
+                      ),
+                        crossPlatform: InAppWebViewOptions(
+                          transparentBackground:true,
+                          debuggingEnabled: true,
+                        )
+                    ),
+                    onWebViewCreated: (InAppWebViewController controller) {
+                      webView = controller;
+                    },
+                    onLoadStart: (InAppWebViewController controller, String url) {
+                      setState(() {
+                        this.url = url;
+                      });
+                    },
+                    onLoadStop: (InAppWebViewController controller, String url) async {
+                      setState(() {
+                        this.url = url;
+                      });
+                    },
+                    onProgressChanged: (InAppWebViewController controller, int progress) {
+                      setState(() {
+                        this.progress = progress / 100;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      if (webView != null) {
+                        webView.goBack();
+                      }
+                    },
+                  ),
+                  RaisedButton(
+                    child: Icon(Icons.arrow_forward),
+                    onPressed: () {
+                      if (webView != null) {
+                        webView.goForward();
+                      }
+                    },
+                  ),
+                  RaisedButton(
+                    child: Icon(Icons.refresh),
+                    onPressed: () {
+                      if(_darktheme == true)
+                      {
+                        _darktheme = false;
+                      }
+                      else{
+                        _darktheme = true;
+                      }
+                      print(_darktheme);
+                      if (webView != null) {
+                        webView.reload();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ])),
       ),
     );
   }

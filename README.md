@@ -7,10 +7,12 @@ Added features:
 - Pull to refresh
 - Change the news based on country
 - Sort the news
-
-To Do:
 - a search function
 - a sharing mechanism
+- a summarising function
+- in app web view dark mode
+
+To Do:`
 - bookmarks
 
 Reference:

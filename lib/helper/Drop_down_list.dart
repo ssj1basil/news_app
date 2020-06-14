@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/helper/default_values.dart';
-import 'package:newsapp/views/home.dart';
 
 class Dropdown_list extends StatefulWidget {
   List<String> droplist;
