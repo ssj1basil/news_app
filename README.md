@@ -9,7 +9,6 @@ Added features:
 - Sort the news
 - a search function
 - a sharing mechanism
-<<<<<<< HEAD
 - a summarising function
 - in app web view dark mode
 
